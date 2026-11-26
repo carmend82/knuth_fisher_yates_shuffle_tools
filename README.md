@@ -31,3 +31,10 @@ The standard library's `random.shuffle` is convenient but not testable without m
 - The sequence must be mutable. Passing a tuple or string raises `TypeError`.
 - The random source must return an integer within `[0, n)`. If it returns an out-of-range value, `shuffle` raises `ValueError`.
 - An empty sequence or a single-element sequence is left unchanged.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
